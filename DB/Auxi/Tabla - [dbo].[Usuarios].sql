@@ -8,9 +8,9 @@ SELECT * FROM Usuarios WHERE MarcaBorrado = '1'
 --INSERT INTO TipoUsuarios (Codigo,Nombre,PoderAdicionar,PoderEditar,PoderEliminar,PoderExportar,PoderGuardar,PoderImprimir) VALUES ('0001','SUPERUSUARIO',1,1,1,1,1,1)
 
 -- Insertar Usruario ADMINISTRADOR
---INSERT INTO Usuarios (Codigo,Nombre,Usuario,Clave,CodTipoUsuario) VALUES 
+--INSERT INTO Usuarios (Codigo,Nombre,Usuario,Clave,CodTipoUsuario) VALUES (,'ADMIN','ADMIN','ADMIN','0001')
 
---EXEC [dbo].[PA_Usuarios] @Operacion = 'INSERTBASICO', @Nombre = 'ADMINISTRADOR',@Usuario = 'ADMIN',@Clave = 'ADMIN', @CodTipoUsuario = '0001'
+--EXEC [dbo].[PA_Usuarios] @Operacion = 'INSERTBASICO', @Nombre = 'ADMIN',@Usuario = 'ADMIN',@Clave = 'ADMIN', @CodTipoUsuario	= '0001'
 
 
 --DROP TABLE [dbo].[Usuarios]

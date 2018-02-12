@@ -121,29 +121,32 @@ GO
 										,PoderEliminar
 										,PoderExportar
 										,PoderGuardar
-										,PoderImprimir
-										)
-			VALUES					(@CodTipoUsuario
-									,@Nombre
-									,@PoderAdicionar
-									,@PoderEditar
-									,@PoderEliminar
-									,@PoderExportar
-									,@PoderGuardar
-									,@PoderImprimir)--por aqui
+										,PoderImprimir)
+			VALUES						(@CodTipoUsuario
+										,@Nombre
+										,@PoderAdicionar
+										,@PoderEditar
+										,@PoderEliminar
+										,@PoderExportar
+										,@PoderGuardar
+										,@PoderImprimir)--por aqui
 			
 			SELECT @Id = @@IDENTITY
 
-			SELECT @Id AS IdUsuario, @CodUsuario AS CodUsuario
+			SELECT @Id AS IdTipoUsuario, @CodTipoUsuario AS CodTipoUsuario
 		END
 		
 		IF @Operacion = 'UPDATE'
 		BEGIN			
 
-			UPDATE	Usuarios 
-			SET		Clave			= @Clave
-					,CodTipoUsuario = @CodTipoUsuario
-					, Nombre		= @Nombre
+			UPDATE	TU  
+			SET		PoderAdicionar	= @PoderAdicionar	
+					,PoderEditar	= @PoderEditar
+					,PoderEliminar	= @PoderEliminar
+					,PoderExportar	= @PoderExportar
+					,PoderGuardar	= @PoderGuardar
+					,PoderImprimir 	= @PoderImprimir 
+			FROM	TipoUsuarios AS TU
 			WHERE	Id = @Id
 
 		END
@@ -151,7 +154,7 @@ GO
 		IF @Operacion = 'DEL'
 		BEGIN	
 
-			DELETE FROM Usuarios WHERE	Id = @Id
+			DELETE FROM TipoUsuarios WHERE	Id = @Id
 					
 		END
 
