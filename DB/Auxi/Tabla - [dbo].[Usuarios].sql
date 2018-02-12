@@ -1,4 +1,5 @@
 
+
 SELECT * FROM [dbo].[Usuarios]
 SELECT * FROM [dbo].TipoUsuarios
 SELECT * FROM Usuarios WHERE MarcaBorrado = '1'

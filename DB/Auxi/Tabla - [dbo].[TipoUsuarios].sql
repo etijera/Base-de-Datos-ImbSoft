@@ -2,9 +2,10 @@
 
 SELECT * FROM [dbo].[TipoUsuarios]
 
-
+--DBCC CHECKIDENT (TipoUsuarios, RESEED, 0)
 --DROP TABLE [dbo].[TipoUsuarios]
 CREATE TABLE [dbo].[TipoUsuarios](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[MarcaBorrado] [varchar](1) NOT NULL CONSTRAINT [DF_TipoUsuarios_MarcaBorrado]  DEFAULT ('1'),
 	[Codigo] [varchar](4) NOT NULL,
 	[Nombre] [varchar](50) NOT NULL,
@@ -25,6 +26,7 @@ GO
 SET ANSI_PADDING OFF
 GO
 
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Id de tipo uasuario, auntoincremental.' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'TipoUsuarios', @level2type=N'COLUMN',@level2name=N'Id'
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Marca de borrado.' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'TipoUsuarios', @level2type=N'COLUMN',@level2name=N'MarcaBorrado'
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Código de la fuente.' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'TipoUsuarios', @level2type=N'COLUMN',@level2name=N'Codigo'
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Nombre de la fuente.' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'TipoUsuarios', @level2type=N'COLUMN',@level2name=N'Nombre'
