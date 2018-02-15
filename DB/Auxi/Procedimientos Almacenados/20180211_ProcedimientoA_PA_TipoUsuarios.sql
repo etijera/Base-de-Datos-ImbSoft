@@ -133,7 +133,7 @@ GO
 			
 			SELECT @Id = @@IDENTITY
 
-			SELECT @Id AS IdTipoUsuario, @CodTipoUsuario AS CodTipoUsuario
+			SELECT @Id AS Id, @CodTipoUsuario AS CodTipoUsuario
 		END
 		
 		IF @Operacion = 'UPDATE'
