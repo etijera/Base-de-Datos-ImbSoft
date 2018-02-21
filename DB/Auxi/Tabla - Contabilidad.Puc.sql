@@ -1,6 +1,10 @@
 
 --CREATE SCHEMA Contabilidad;  
 --GO;
+DROP TABLE  [Contabilidad].[Puc]
+DROP TABLE  Contabilidad.ClasificacionPuc
+DROP TABLE  Contabilidad.ClasificacionPucDetalles
+DROP TABLE  Contabilidad.MovimientosAsiento
 
 CREATE TABLE [Contabilidad].[Puc](
 	[MarcaBorrado] [varchar](1) NOT NULL CONSTRAINT [DF_Puc_MarcaBorrado]  DEFAULT ((1)),
@@ -13,7 +17,13 @@ CREATE TABLE [Contabilidad].[Puc](
 	[Tercero] [bit] NOT NULL CONSTRAINT [DF_Puc_Tercero] DEFAULT ((0)),
 	[Ccosto] [bit] NOT NULL CONSTRAINT [DF_Puc_Ccosto] DEFAULT ((0)),
 	[Cheque] [varchar](12) NOT NULL CONSTRAINT [DF_Puc_Cheque] DEFAULT (''),
+	[TipoConcepto] [varchar](12) NOT NULL CONSTRAINT [DF_Puc_TipoConcepto] DEFAULT (''),
+	[Gravamen] [int] NOT NULL CONSTRAINT [DF_Puc_Gravamen] DEFAULT ((0)),
+	[InicialBanco] [money] NOT NULL CONSTRAINT [DF_Puc_InicialBanco] DEFAULT ((0)),
+	[BancoNumero] [varchar](50) NOT NULL CONSTRAINT [DF_Puc_BancoNumero] DEFAULT (''),
+	[BancoTipo] [varchar](50) NOT NULL CONSTRAINT [DF_Puc_BancoTipo] DEFAULT (''),
 	[MontoCajaMenor] [money] NOT NULL CONSTRAINT [DF_Puc_MontoCajaMenor] DEFAULT ((0)),
+	[Fecha] [datetime] NOT NULL CONSTRAINT [DF_Puc_Fecha] DEFAULT (''),
 	[ContraPartidaCajaMenor] [varchar](20) NOT NULL CONSTRAINT [DF_Puc_ContraPartidaCajaMenor] DEFAULT (''),
 	[ResponsableCajaMenor] [varchar](20) NOT NULL CONSTRAINT [DF_Puc_ResponsableCajaMenor] DEFAULT (''),
 	[MontoRetencion] [money] NOT NULL CONSTRAINT [DF_Puc_MontoRetencion] DEFAULT ((0)),
