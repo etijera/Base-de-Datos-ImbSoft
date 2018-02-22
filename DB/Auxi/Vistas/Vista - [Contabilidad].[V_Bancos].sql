@@ -1,28 +1,28 @@
 
 
-SELECT * FROM Contabilidad.ClasificacionPuc
-SELECT * FROM Contabilidad.ClasificacionPucDetalles
-SELECT * FROM Contabilidad.Puc
 
-IF NOT  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Contabilidad].[V_Bancos]') AND type in (N'V '))
-BEGIN	
+--IF NOT  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Contabilidad].[V_Bancos]') AND type in (N'V '))
+--BEGIN	
+--	DROP VIEW [Contabilidad].[V_Bancos]
 	CREATE VIEW [Contabilidad].[V_Bancos]
 	AS
-	SELECT	MarcaBorrado
-			,Codigo As bancod
-			,Nombre As bannom
-			,Saldo As bansal
-			,Cheque As banch
-			--,glgravamen As bangr
-			,fe As banfec
-			,glIniBanco As banini
-			,'' As banrep1
-			,'' As banrep2
-			,glPlano As banpla
-			,glBanNro As BanNro
-			,glBanTip As BanTip
-			,TipoConCepto
+	SELECT	PUC.MarcaBorrado
+			,PUC.Codigo As Codigo
+			,PUC.Nombre As Nombre
+			,PUC.Saldo As Saldo
+			,PUC.Cheque As Cheque
+			,PUC.Gravamen As Gravamen
+			,PUC.Fecha As Fecha
+			,PUC.InicialBanco As Inicial
+			--,'' As banrep1
+			--,'' As banrep2
+			--,glPlano As banpla
+			,PUC.BancoNumero As Numero
+			,PUC.BancoTipo As Tipo
+			,PUC.TipoConCepto AS TipoConcepto
 	FROM	Contabilidad.Puc AS PUC 
-			INNER JOIN Puc_Clasificacion_Det ON Puc_Clasificacion_Det.Det_Puc = AccglPuc.glCod
-	WHERE	Puc_Clasificacion_Det.Det_Codigo = '0005'
-END
+			INNER JOIN Contabilidad.ClasificacionPucDetalles AS PUD_DET ON PUD_DET.CodigoPuc = PUC.Codigo
+	WHERE	PUD_DET.CodigoClasificacion = '0005'
+--END
+
+-- select * from [Contabilidad].[V_Bancos]
