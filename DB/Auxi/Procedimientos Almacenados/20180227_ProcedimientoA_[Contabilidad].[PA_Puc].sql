@@ -17,8 +17,8 @@ CREATE PROCEDURE [Contabilidad].[PA_Puc]
 	,@TipoRetencion				INT				= NULL
 	,@PorcentajeRetencion		MONEY			= NULL
 	,@Nombre					VARCHAR(50)		= NULL
-	--,@GlVersion					VARCHAR(10)		= NULL
-	--,@GlCodDIAN					VARCHAR(10)		= NULL
+	,@GlVersion					VARCHAR(10)		= NULL
+	,@GlCodDIAN					VARCHAR(10)		= NULL
 	,@TipoConcepto				VARCHAR(12)		= NULL
 	,@Ccosto					INT				= NULL
 	,@Tercero					INT				= NULL
@@ -103,8 +103,8 @@ BEGIN
 	BEGIN
 		SELECT	PUC.Codigo			Codigo
 				,PUC.Nombre			Nombre
-				--,PUC.glVersion		Version
-				--,PUC.glCodDIAN		Dian
+				,''					Version
+				,''					Dian
 				,PUC.TipoConcepto	Clasificacion
 				,PUC.Ccosto			Ccosto
 				,PUC.Tercero		Tercero
@@ -117,7 +117,7 @@ BEGIN
 	IF @Operacion = 'IUPUC'
 	BEGIN
 		
-		DECLARE @CodigoP				VARCHAR(12)
+		DECLARE @CodigoP			VARCHAR(12)
 				,@CodigoSubCuenta	VARCHAR(12)
 				,@GlcctSubCuenta	INT				
 				,@GlterSubCuenta	INT				
@@ -168,134 +168,135 @@ BEGIN
 		END
 		ELSE
 		BEGIN
-			UPDATE	AccglPuc
-			SET		glnum			= @Glnum			
-					,glVersion		= @GlVersion	
-					,glCodDIAN		= @GlCodDIAN	
+			UPDATE	Contabilidad.Puc
+			SET		Nombre			= @Nombre			
+					--,glVersion		= @GlVersion	
+					--,glCodDIAN		= @GlCodDIAN	
 					,TipoConcepto	= @TipoConcepto	
-					,glcct			= @Glcct	
-					,glter			= @Glter
-			WHERE	glcod= @Glcod
+					,Ccosto			= @Ccosto	
+					,Tercero		= @Tercero
+			WHERE	Codigo= @Codigo
 									
 		END				
 	END
 	
-	IF @Operacion = 'SCM'
+	IF @Operacion = 'SCM' -- Selecionar Caja menor
 	BEGIN
-		SELECT	glcod
-				,glContraPartidaCajaMenor
-				,glResponsableCajaMenor
-				,glMotoCajaMenor 
-		FROM	AccglPUC 				
-		WHERE	glcod=@Glcod
+		SELECT	Codigo
+				,ContraPartidaCajaMenor
+				,ResponsableCajaMenor
+				,MontoCajaMenor 
+		FROM	Contabilidad.Puc  				
+		WHERE	Codigo = @Codigo
 	END
 	
-	IF @Operacion = 'ICM'
+	IF @Operacion = 'ICM' -- Insertar Caja menor
 	BEGIN
-		INSERT INTO AccglPUC (glcod
-							  ,glContraPartidaCajaMenor
-							  ,glResponsableCajaMenor
-							  ,glMotoCajaMenor) 
-		VALUES				 (@Glcod
-							  ,@GlContraPartidaCajaMenor
-							  ,@GlResponsableCajaMenor
-							  ,@GlMotoCajaMenor)
+		INSERT INTO Contabilidad.Puc   (Codigo
+										,ContraPartidaCajaMenor
+										,ResponsableCajaMenor
+										,MontoCajaMenor) 
+		VALUES				 (@Codigo
+							  ,@ContraPartidaCajaMenor
+							  ,@ResponsableCajaMenor
+							  ,@MontoCajaMenor)
 	END
 	
-	IF @Operacion = 'UCM'
+	IF @Operacion = 'UCM' -- Actualizar Caja Menor
 	BEGIN
-		UPDATE	AccglPUC 
-		SET		glContraPartidaCajaMenor = @GlContraPartidaCajaMenor
-				,glResponsableCajaMenor  = @GlResponsableCajaMenor
-				,glMotoCajaMenor		 = @GlMotoCajaMenor
-		WHERE glcod = @Glcod
+		UPDATE	Contabilidad.Puc 
+		SET		ContraPartidaCajaMenor	= @ContraPartidaCajaMenor
+				,ResponsableCajaMenor	= @ResponsableCajaMenor
+				,MontoCajaMenor			= @MontoCajaMenor
+		WHERE	Codigo = @Codigo
 	END
 	
-	IF @Operacion = 'SCB'
+	IF @Operacion = 'SCB' --Seleccionar Bancos
 	BEGIN
-		SELECT  glcod
-				,glPlano
-				,glcheque
-				,glgravamen
-		FROM AccglPUC where glcod=@Glcod
+		SELECT  @Codigo
+				--,glPlano
+				,Cheque
+				,Gravamen
+		FROM	Contabilidad.Puc  
+		WHERE	Codigo = @Codigo
 	END
 	
-	IF @Operacion = 'ICB'
+	IF @Operacion = 'ICB' -- Insertar Banco
 	BEGIN
-		INSERT INTO accglPUC (glPlano
-							 ,glcheque
-							 ,glgravamen)
-		VALUES				 (@GlPlano
-							 ,@Glcheque
-							 ,@Glgravamen)					
+		INSERT INTO Contabilidad.Puc (Cheque
+									 --,glPlano
+									 ,Gravamen)
+		VALUES				 (	@Cheque
+								 --,@GlPlano
+								 ,@Gravamen)					
 	END
 	
-	IF @Operacion = 'UCB'
+	IF @Operacion = 'UCB' -- Actualizar banco
 	BEGIN
-		UPDATE	accglPUC 
-		SET		glPlano		= @GlPlano
-				,glcheque	= @Glcheque
-				,glgravamen	= @Glgravamen
-		WHERE	glcod		= @Glcod 					
+		UPDATE	Contabilidad.Puc 
+		SET		Cheque		= @Cheque
+				--,glPlano	= @GlPlano
+				,Gravamen	= @Gravamen
+		WHERE	Codigo		= @Codigo					
 	END	
 	
-	IF @Operacion = 'STI'
+	IF @Operacion = 'STI' -- Seleccionar Iva
 	BEGIN
-		SELECT  glcod
-				,glModalidad		
-				,glRetTipo
-				,glRetPorCentaje
-		FROM	AccglPUC 
-		WHERE	glcod=@Glcod
+		SELECT  Codigo
+				,Modalidad		
+				,TipoRetencion
+				,PorcentajeRetencion
+		FROM	Contabilidad.Puc  
+		WHERE	Codigo = @Codigo
 	END
 	
-	IF @Operacion = 'ITI'
+	IF @Operacion = 'ITI' -- Insertar Iva
 	BEGIN
-		INSERT INTO AccglPUC(glModalidad		
-							,glRetTipo
-							,glRetPorCentaje)
-		VALUES				(@GlModalidad		
-							,@GlRetTipo
-							,@GlRetPorCentaje)
+		INSERT INTO Contabilidad.Puc (Modalidad		
+							,TipoRetencion
+							,PorcentajeRetencion)
+		VALUES				(@Modalidad		
+							,@TipoRetencion
+							,@PorcentajeRetencion)
 		
 	END
 	
-	IF @Operacion = 'UTI'
+	IF @Operacion = 'UTI' -- Actualizar Iva
 	BEGIN
-		UPDATE	AccglPUC
-		SET		glModalidad		= @GlModalidad
-				,glRetTipo		= @GlRetTipo
-				,glRetPorCentaje= @GlRetPorCentaje
-		WHERE	glcod = @Glcod		
+		UPDATE	Contabilidad.Puc 
+		SET		Modalidad				= @Modalidad
+				,TipoRetencion			= @TipoRetencion
+				,PorcentajeRetencion	= @PorcentajeRetencion
+		WHERE	Codigo = @Codigo		
 		
 	END
 	
-	IF @Operacion = 'VIDF' -- Verificar insercion activos diferidos
-	BEGIN
-		SELECT	DifPuc
-		FROM	prodiferidos
-		WHERE	DifPuc = @Glcod		
-	END
+	--IF @Operacion = 'VIDF' -- Verificar insercion activos diferidos
+	--BEGIN
+	--	SELECT	DifPuc
+	--	FROM	prodiferidos
+	--	WHERE	DifPuc = @Glcod		
+	--END
 	
-	IF @Operacion = 'VICN' -- Verificar insercion conceptos nomina
-	BEGIN
-		SELECT	conAux
-				,conCod
-		FROM	neconceptos
-		WHERE	conAux = @Glcod	
-	END
+	--IF @Operacion = 'VICN' -- Verificar insercion conceptos nomina
+	--BEGIN
+	--	SELECT	conAux
+	--			,conCod
+	--	FROM	neconceptos
+	--	WHERE	conAux = @Glcod	
+	--END
 	
-	IF @Operacion = 'VIAF' -- Verificar insercion activos fijos
-	BEGIN
-		SELECT	tacpuc
-		FROM	accgltipoact
-		WHERE	tacpuc = @Glcod	
-	END
+	--IF @Operacion = 'VIAF' -- Verificar insercion activos fijos
+	--BEGIN
+	--	SELECT	tacpuc
+	--	FROM	accgltipoact
+	--	WHERE	tacpuc = @Glcod	
+	--END
 	
 	IF @Operacion = 'R'
 	BEGIN
-		UPDATE	accglPUC
-		SET		delmrk='1'
-		WHERE	glcod = @Glcod
+		UPDATE	Contabilidad.Puc 
+		SET		MarcaBorrado='1'
+		WHERE	Codigo = @Codigo
 	END
 END
