@@ -216,7 +216,7 @@ BEGIN
 	
 	IF @Operacion = 'SCB' --Seleccionar Bancos
 	BEGIN
-		SELECT  @Codigo
+		SELECT  @Codigo Codigo
 				--,glPlano
 				,Cheque
 				,Gravamen
