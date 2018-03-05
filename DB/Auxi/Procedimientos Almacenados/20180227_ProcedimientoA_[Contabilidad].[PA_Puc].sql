@@ -17,9 +17,9 @@ CREATE PROCEDURE [Contabilidad].[PA_Puc]
 	,@TipoRetencion				INT				= NULL
 	,@PorcentajeRetencion		MONEY			= NULL
 	,@Nombre					VARCHAR(50)		= NULL
-	,@GlVersion					VARCHAR(10)		= NULL
-	,@GlCodDIAN					VARCHAR(10)		= NULL
-	,@TipoConcepto				VARCHAR(12)		= NULL
+	--,@Version					VARCHAR(10)		= NULL
+	--,@CodigoDIAN				VARCHAR(10)		= NULL
+	,@TipoConcepto				VARCHAR(12)		= ''
 	,@Ccosto					INT				= NULL
 	,@Tercero					INT				= NULL
 
@@ -71,6 +71,8 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
+	SET @TipoConcepto = ''
+
 	IF @Operacion = 'SCLC'
 	BEGIN
 		DECLARE @ChkF BIT 
@@ -96,6 +98,7 @@ BEGIN
 						,PUC_DET.CodigoPuc
 				 FROM	Contabilidad.ClasificacionPucDetalles AS PUC_DET 
 				 WHERE	PUC_DET.CodigoPuc = @Codigo) AS SUB ON CLA_PUC.Codigo = SUB.Det_codigo
+		WHERE	CLA_PUC.MarcaBorrado = 1
 		ORDER BY Descripcion
 	END
 	
