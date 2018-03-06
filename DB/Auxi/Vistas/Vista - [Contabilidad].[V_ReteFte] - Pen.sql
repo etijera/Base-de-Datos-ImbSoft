@@ -1,6 +1,4 @@
 
-
-
 --	DROP VIEW [Contabilidad].[V_ReteFte]
 CREATE VIEW [Contabilidad].[V_ReteFte]
 AS
